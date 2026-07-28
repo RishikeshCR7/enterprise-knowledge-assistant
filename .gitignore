@@ -1,26 +1,33 @@
-# Python
-venv/
+# Python & Environment
 __pycache__/
 *.py[cod]
-*.egg-info/
-
-# Environment
+*$py.class
+venv/
+.venv/
+env/
 .env
 
-# IDE
-.vscode/
+# Byte-compiled / optimized / DLL files
+*.so
 
-# macOS
+# Vector DB & Storage
+chroma_db/
+*.chroma
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.output/
+.vite/
+
+# IDE & OS
 .DS_Store
+.vscode/
+.idea/
 
-# Test cache
+# Testing & Coverage
 .pytest_cache/
-
-# ChromaDB
-chroma/
-
-# Node
-frontend/node_modules/
-
-# Logs
-*.log
+.coverage
+htmlcov/
