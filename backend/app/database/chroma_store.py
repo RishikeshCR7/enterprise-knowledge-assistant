@@ -2,13 +2,55 @@ import os
 import logging
 from typing import List, Dict, Any, Optional
 import chromadb
-from chromadb.config import Settings as ChromaSettings
 
 from app.config.settings import settings
 from app.models.document import DocumentChunk, DocumentMetadata
 from app.database.embeddings import embedding_pipeline
+from app.rbac.permissions import can_access_document
+from app.rbac.roles import UserContext
 
 logger = logging.getLogger(__name__)
+
+
+def build_chroma_filter(
+    department: Optional[str] = None,
+    security_level: Optional[str] = None,
+    allowed_roles: Optional[List[str]] = None,
+    custom_filters: Optional[Dict[str, Any]] = None
+) -> Optional[Dict[str, Any]]:
+    """
+    Builds a ChromaDB-compliant 'where' filter dictionary.
+    Supports department, security_level, allowed_roles, and custom filters.
+    """
+    conditions = []
+
+    if department:
+        conditions.append({"department": department})
+
+    if security_level:
+        conditions.append({"security_level": security_level})
+
+    if allowed_roles:
+        if len(allowed_roles) == 1:
+            conditions.append({"allowed_roles_str": {"$contains": allowed_roles[0]}})
+        else:
+            # Match any of the permitted roles
+            role_conds = [{"allowed_roles_str": {"$contains": role}} for role in allowed_roles]
+            conditions.append({"$or": role_conds})
+
+    if custom_filters:
+        for key, val in custom_filters.items():
+            if isinstance(val, dict):
+                conditions.append({key: val})
+            else:
+                conditions.append({key: val})
+
+    if not conditions:
+        return None
+    elif len(conditions) == 1:
+        return conditions[0]
+    else:
+        return {"$and": conditions}
 
 
 class ChromaStore:
@@ -41,7 +83,6 @@ class ChromaStore:
             meta["chunk_index"] = chunk.chunk_index
             metadatas.append(meta)
 
-        # Check embeddings
         embeddings = []
         for chunk in chunks:
             if chunk.embedding:
@@ -72,17 +113,27 @@ class ChromaStore:
             logger.error(f"Error deleting document {doc_id}: {str(e)}")
             return False
 
-    def similarity_search(self, query: str, k: int = 4, filter: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+    def search(
+        self,
+        query: str,
+        k: int = 4,
+        filters: Optional[Dict[str, Any]] = None,
+        user_context: Optional[UserContext] = None
+    ) -> List[Dict[str, Any]]:
         """
-        Performs vector similarity search against ChromaDB.
+        Task A1: Performs vector search with metadata filtering and RBAC enforcement.
         """
         query_embedding = embedding_pipeline.embed_text(query)
+        
+        # Over-fetch if user_context is provided to guarantee top-k after RBAC filtering
+        fetch_k = k * 3 if user_context else k
+
         kwargs: Dict[str, Any] = {
             "query_embeddings": [query_embedding],
-            "n_results": k,
+            "n_results": fetch_k,
         }
-        if filter:
-            kwargs["where"] = filter
+        if filters:
+            kwargs["where"] = filters
 
         results = self.collection.query(**kwargs)
         
@@ -91,17 +142,39 @@ class ChromaStore:
             ids = results["ids"][0]
             docs = results["documents"][0]
             metas = results["metadatas"][0]
-            distances = results["distances"][0] if "distances" in results else [0.0] * len(ids)
+            distances = results["distances"][0] if "distances" in results and results["distances"] else [0.0] * len(ids)
 
             for i in range(len(ids)):
+                meta = metas[i]
+                
+                # Post-retrieval RBAC authorization check if user context is provided
+                if user_context and not can_access_document(user_context, meta):
+                    logger.debug(f"User {user_context.username} (Role: {user_context.role}) denied access to chunk {ids[i]}")
+                    continue
+
                 formatted_results.append({
                     "chunk_id": ids[i],
                     "text": docs[i],
-                    "metadata": metas[i],
-                    "score": 1.0 - distances[i] if distances[i] is not None else 1.0
+                    "metadata": meta,
+                    "score": round(1.0 - distances[i], 4) if distances[i] is not None else 1.0
                 })
 
+                if len(formatted_results) >= k:
+                    break
+
         return formatted_results
+
+    def similarity_search(
+        self,
+        query: str,
+        k: int = 4,
+        filter: Optional[Dict[str, Any]] = None,
+        user_context: Optional[UserContext] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Alias for search method to ensure backward compatibility.
+        """
+        return self.search(query=query, k=k, filters=filter, user_context=user_context)
 
     def get_document(self, doc_id: str) -> List[Dict[str, Any]]:
         """
