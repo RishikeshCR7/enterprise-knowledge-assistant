@@ -4,6 +4,8 @@ from langgraph.graph import StateGraph, START, END
 
 from app.agents.query_rewriter import rewrite_query
 from app.retrieval.retriever import retrieve_chunks
+from app.agents.reranker import reranker
+from app.agents.llm_client import llm_client
 from app.rbac.roles import UserContext, UserRole, Department
 
 logger = logging.getLogger(__name__)
@@ -23,27 +25,16 @@ class RAGState(TypedDict):
 
 # Node 1: Task B1 - Query Rewriting Node
 def rewrite_node(state: RAGState) -> RAGState:
-    """
-    Node 1 (Task B1): Rewrites and expands the user query into a domain-optimized search query.
-    """
-    logger.info("[LangGraph Node] Rewrite Query")
+    logger.info("[LangGraph Node] 1. Rewrite Query")
     raw_q = state.get("question", "")
     user_ctx_dict = state.get("user_context")
-    
     rewritten = rewrite_query(raw_query=raw_q, user_context=user_ctx_dict)
-    
-    return {
-        **state,
-        "rewritten_query": rewritten
-    }
+    return {**state, "rewritten_query": rewritten}
 
 
 # Node 2: Document Retrieval Node (Task A1/A2 Integration)
 def retrieve_node(state: RAGState) -> RAGState:
-    """
-    Node 2: Retrieves candidate chunks from ChromaDB with RBAC filtering.
-    """
-    logger.info("[LangGraph Node] Retrieve Documents")
+    logger.info("[LangGraph Node] 2. Retrieve Documents")
     search_query = state.get("rewritten_query") or state.get("question", "")
     user_ctx_dict = state.get("user_context")
     
@@ -57,89 +48,51 @@ def retrieve_node(state: RAGState) -> RAGState:
                 department=Department(user_ctx_dict.get("department", Department.HR.value))
             )
         except Exception as e:
-            logger.warning(f"Error parsing UserContext in retrieve_node: {str(e)}")
+            logger.warning(f"Error parsing UserContext: {str(e)}")
 
-    retrieved = retrieve_chunks(
-        query=search_query,
-        k=10,
-        user_context=user_ctx
-    )
-    
-    return {
-        **state,
-        "retrieved_docs": retrieved
-    }
+    retrieved = retrieve_chunks(query=search_query, k=10, user_context=user_ctx)
+    return {**state, "retrieved_docs": retrieved}
 
 
-# Node 3: Task B3 - Rerank Node
+# Node 3: Task B3 - Cross-Encoder Rerank Node
 def rerank_node(state: RAGState) -> RAGState:
-    """
-    Node 3 (Task B3): Reranks candidate chunks based on semantic relevance scores.
-    """
-    logger.info("[LangGraph Node] Rerank Documents")
+    logger.info("[LangGraph Node] 3. Cross-Encoder Rerank")
     retrieved = state.get("retrieved_docs", []) or []
+    query = state.get("rewritten_query") or state.get("question", "")
     
-    # Sort chunks by score descending
-    sorted_chunks = sorted(retrieved, key=lambda x: x.get("score", 0.0), reverse=True)
-    top_chunks = sorted_chunks[:5]
+    # Task B3: Use CrossEncoderReranker to score & select top 5 chunks
+    top_reranked = reranker.rerank(query=query, chunks=retrieved, top_k=5)
 
     return {
         **state,
-        "reranked_docs": top_chunks,
-        "filtered_docs": top_chunks
+        "reranked_docs": top_reranked,
+        "filtered_docs": top_reranked
     }
 
 
-# Node 4: Task B4 - Response Generation Node
+# Node 4: Task B4 - Response Generation Node (Groq / Gemini / Grounded QA)
 def generate_node(state: RAGState) -> RAGState:
-    """
-    Node 4 (Task B4): Synthesizes response based on retrieved & reranked context documents.
-    """
-    logger.info("[LangGraph Node] Generate Answer")
+    logger.info("[LangGraph Node] 4. Generate Response (LLM)")
     reranked = state.get("reranked_docs", []) or []
     question = state.get("question", "")
 
-    if not reranked:
-        answer = "I could not find any relevant authorized documents matching your request."
-        sources = []
-    else:
-        context_snippets = []
-        sources = []
-        for idx, chunk in enumerate(reranked, 1):
-            meta = chunk.get("metadata", {})
-            title = meta.get("title") or meta.get("doc_id") or f"Document {idx}"
-            dept = meta.get("department", "General")
-            context_snippets.append(f"[{idx}] {title} ({dept}): {chunk.get('text', '')}")
-            sources.append({
-                "source_id": idx,
-                "title": title,
-                "department": dept,
-                "chunk_id": chunk.get("chunk_id")
-            })
-
-        joined_context = "\n".join(context_snippets)
-        answer = f"Based on retrieved company documentation:\n\n{joined_context}\n\n[Summary response generated for query: '{question}']"
+    # Task B4: Call LLMClient to produce grounded QA with source citations
+    llm_result = llm_client.generate_response(query=question, context_chunks=reranked)
 
     return {
         **state,
-        "generation": answer,
-        "sources": sources
+        "generation": llm_result["answer"],
+        "sources": llm_result["sources"]
     }
 
 
 # Node 5: Guardrails & Safety Check Node
 def guard_node(state: RAGState) -> RAGState:
-    """
-    Node 5: Validates safety of generated response.
-    """
-    logger.info("[LangGraph Node] Guardrails Check")
-    return {
-        **state,
-        "is_safe": True
-    }
+    logger.info("[LangGraph Node] 5. Guardrails Check")
+    return {**state, "is_safe": True}
 
 
-# Build Phase 2 LangGraph Workflow
+# Build Phase 2 LangGraph Execution Pipeline
 def create_rag_graph():
     builder = StateGraph(RAGState)
 
@@ -149,7 +102,6 @@ def create_rag_graph():
     builder.add_node("generate", generate_node)
     builder.add_node("guard", guard_node)
 
-    # Execution Flow: START -> rewrite -> retrieve -> rerank -> generate -> guard -> END
     builder.add_edge(START, "rewrite")
     builder.add_edge("rewrite", "retrieve")
     builder.add_edge("retrieve", "rerank")
