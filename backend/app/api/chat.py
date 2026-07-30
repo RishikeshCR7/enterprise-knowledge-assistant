@@ -18,6 +18,7 @@ class ChatResponse(BaseModel):
     answer: str = Field(..., description="Generated answer")
     rewritten_query: Optional[str] = None
     retrieved_docs: List[Dict[str, Any]] = Field(default_factory=list)
+    sources: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 @router.post("/chat", response_model=ChatResponse)
@@ -48,6 +49,7 @@ async def chat_endpoint(request: ChatRequest):
             answer=final_state.get("generation", "Coming Soon"),
             rewritten_query=final_state.get("rewritten_query"),
             retrieved_docs=final_state.get("filtered_docs", []),
+            sources=final_state.get("sources", []),
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error executing chat graph: {str(e)}")
