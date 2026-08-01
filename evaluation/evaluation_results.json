@@ -1,0 +1,53 @@
+{
+  "mean_context_precision": 0.2,
+  "mean_context_recall": 0.6,
+  "mean_faithfulness": 0.6153,
+  "mean_answer_relevancy": 1.0,
+  "sample_evaluations": [
+    {
+      "id": "eval_01",
+      "query": "What is the annual leave paid time off entitlement for full-time employees?",
+      "context_precision": 0.25,
+      "context_recall": 1.0,
+      "faithfulness": 0.5778,
+      "answer_relevancy": 1.0,
+      "chunks_retrieved": 4
+    },
+    {
+      "id": "eval_02",
+      "query": "What software engineering python code formatting and typing tools must pass before PR submission?",
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "faithfulness": 0.5942,
+      "answer_relevancy": 1.0,
+      "chunks_retrieved": 4
+    },
+    {
+      "id": "eval_03",
+      "query": "What is the daily per diem meal allowance limit for corporate business travel?",
+      "context_precision": 0.25,
+      "context_recall": 1.0,
+      "faithfulness": 0.6761,
+      "answer_relevancy": 1.0,
+      "chunks_retrieved": 4
+    },
+    {
+      "id": "eval_04",
+      "query": "How many days notice is required before Master Service Agreement vendor contract renewal?",
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "faithfulness": 0.6,
+      "answer_relevancy": 1.0,
+      "chunks_retrieved": 4
+    },
+    {
+      "id": "eval_05",
+      "query": "What is the starting base platform enterprise sales contract license price?",
+      "context_precision": 0.5,
+      "context_recall": 1.0,
+      "faithfulness": 0.6286,
+      "answer_relevancy": 1.0,
+      "chunks_retrieved": 4
+    }
+  ]
+}

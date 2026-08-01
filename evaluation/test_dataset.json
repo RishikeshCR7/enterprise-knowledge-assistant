@@ -1,0 +1,42 @@
+[
+  {
+    "id": "eval_01",
+    "query": "What is the annual leave paid time off entitlement for full-time employees?",
+    "department": "HR",
+    "expected_doc_id": "doc_hr_LeavePolicy_pdf",
+    "reference_answer": "Employees are entitled to 20 business days of paid annual leave per calendar year, accrued monthly at a rate of 1.66 days.",
+    "expected_keywords": ["20 business days", "annual leave", "1.66 days"]
+  },
+  {
+    "id": "eval_02",
+    "query": "What software engineering python code formatting and typing tools must pass before PR submission?",
+    "department": "Engineering",
+    "expected_doc_id": "doc_engineering_CodingStandards_pdf",
+    "reference_answer": "All python code must pass Black formatting, Flake8 linting, and MyPy type checking before PR submission.",
+    "expected_keywords": ["Black", "Flake8", "MyPy", "PEP 8"]
+  },
+  {
+    "id": "eval_03",
+    "query": "What is the daily per diem meal allowance limit for corporate business travel?",
+    "department": "Finance",
+    "expected_doc_id": "doc_finance_ExpensePolicy_pdf",
+    "reference_answer": "Daily per diem meal allowance is capped at $75 per day with itemized receipts required for expenses over $25.",
+    "expected_keywords": ["$75 per day", "meal allowance", "itemized receipts"]
+  },
+  {
+    "id": "eval_04",
+    "query": "How many days notice is required before Master Service Agreement vendor contract renewal?",
+    "department": "Legal",
+    "expected_doc_id": "doc_legal_VendorAgreement_pdf",
+    "reference_answer": "Master Service Agreements automatically renew unless written notice is given 60 days prior.",
+    "expected_keywords": ["60 days", "written notice", "automatically renew"]
+  },
+  {
+    "id": "eval_05",
+    "query": "What is the starting base platform enterprise sales contract license price?",
+    "department": "Sales",
+    "expected_doc_id": "doc_sales_SalesStrategy_pdf",
+    "reference_answer": "Base platform license starts at $50,000 per year with tier discounts for additional user seats.",
+    "expected_keywords": ["$50,000", "base platform license", "year"]
+  }
+]

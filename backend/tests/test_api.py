@@ -29,8 +29,8 @@ def test_chat_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert "answer" in data
-    assert data["answer"] == "Coming Soon - Hello Enterprise AI"
-    assert data["rewritten_query"] == "Optimized: What is the HR leave policy?"
+    assert len(data["answer"]) > 0
+    assert "rewritten_query" in data
     print("[OK] POST /api/v1/chat passed")
 
 
