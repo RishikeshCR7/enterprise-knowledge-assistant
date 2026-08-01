@@ -1,6 +1,7 @@
 import logging
 from typing import List, Dict, Any, Optional
 from app.database.chroma_store import chroma_store, build_chroma_filter
+from app.retrieval.hybrid_search import hybrid_retriever
 from app.rbac.roles import UserContext
 
 logger = logging.getLogger(__name__)
@@ -10,34 +11,43 @@ def retrieve_chunks(
     query: str,
     k: int = 4,
     filters: Optional[Dict[str, Any]] = None,
-    user_context: Optional[UserContext] = None
+    user_context: Optional[UserContext] = None,
+    hybrid: bool = True
 ) -> List[Dict[str, Any]]:
     """
-    Task A2: Retrieves candidate text chunks matching a query.
-    Applies optional metadata filters and RBAC clearance without calling LLM.
+    Task A2 / Task A3: Retrieves candidate text chunks matching a query.
+    Supports hybrid (Vector + BM25) search by default or pure vector search when hybrid=False.
     """
-    logger.info(f"Retrieving chunks for query='{query}', k={k}, filters={filters}")
-    chunks = chroma_store.search(
-        query=query,
-        k=k,
-        filters=filters,
-        user_context=user_context
-    )
-    return chunks
+    logger.info(f"Retrieving chunks (hybrid={hybrid}) for query='{query}', k={k}, filters={filters}")
+    
+    if hybrid:
+        return hybrid_retriever.search(
+            query=query,
+            k=k,
+            filters=filters,
+            user_context=user_context
+        )
+    else:
+        return chroma_store.search(
+            query=query,
+            k=k,
+            filters=filters,
+            user_context=user_context
+        )
 
 
 def retrieve_documents(
     query: str,
     k: int = 4,
     filters: Optional[Dict[str, Any]] = None,
-    user_context: Optional[UserContext] = None
+    user_context: Optional[UserContext] = None,
+    hybrid: bool = True
 ) -> List[Dict[str, Any]]:
     """
-    Task A2: Retrieves distinct candidate documents matching a query.
+    Retrieves distinct candidate documents matching a query.
     Groups matching chunks by doc_id and aggregates metadata and scores.
     """
-    # Fetch top candidate chunks
-    chunks = retrieve_chunks(query=query, k=k * 2, filters=filters, user_context=user_context)
+    chunks = retrieve_chunks(query=query, k=k * 2, filters=filters, user_context=user_context, hybrid=hybrid)
 
     doc_map: Dict[str, Dict[str, Any]] = {}
     for chunk in chunks:
@@ -81,10 +91,11 @@ def retrieve_with_filters(
     department: Optional[str] = None,
     security_level: Optional[str] = None,
     user_context: Optional[UserContext] = None,
-    k: int = 4
+    k: int = 4,
+    hybrid: bool = True
 ) -> List[Dict[str, Any]]:
     """
-    Task A2: Convenience helper to retrieve candidate chunks using explicit department,
+    Convenience helper to retrieve candidate chunks using explicit department,
     security_level, and RBAC user context filters.
     """
     chroma_where = build_chroma_filter(
@@ -95,5 +106,6 @@ def retrieve_with_filters(
         query=query,
         k=k,
         filters=chroma_where,
-        user_context=user_context
+        user_context=user_context,
+        hybrid=hybrid
     )

@@ -43,9 +43,17 @@ def can_access_document(user: UserContext, doc_metadata: Dict[str, Any]) -> bool
         return True
 
     # 2. Explicit role match check in allowed_roles
-    allowed_roles = doc_metadata.get("allowed_roles", [])
-    if allowed_roles and (user.role.value in allowed_roles or user.role in allowed_roles):
-        return True
+    allowed_roles = doc_metadata.get("allowed_roles")
+    if not allowed_roles and "allowed_roles_str" in doc_metadata:
+        allowed_roles = doc_metadata["allowed_roles_str"]
+
+    if isinstance(allowed_roles, str):
+        allowed_roles = [r.strip() for r in allowed_roles.split(",") if r.strip()]
+
+    if allowed_roles:
+        role_vals = [r.value if isinstance(r, UserRole) else str(r) for r in allowed_roles]
+        if user.role.value in role_vals or user.role in allowed_roles:
+            return True
 
     # 3. Department match check
     doc_dept = doc_metadata.get("department")
