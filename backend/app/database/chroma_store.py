@@ -67,6 +67,20 @@ class ChromaStore:
         )
         logger.info(f"ChromaDB Collection '{collection_name}' initialized.")
 
+    def reset_collection(self):
+        """
+        Clears all documents and resets the ChromaDB collection.
+        """
+        try:
+            self.client.delete_collection(self.collection_name)
+        except Exception:
+            pass
+        self.collection = self.client.get_or_create_collection(
+            name=self.collection_name,
+            metadata={"hnsw:space": "cosine"}
+        )
+        logger.info(f"Reset ChromaDB collection '{self.collection_name}'.")
+
     def add_documents(self, chunks: List[DocumentChunk]) -> int:
         """
         Adds document chunks and their vector embeddings to ChromaDB.

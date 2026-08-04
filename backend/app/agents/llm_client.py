@@ -2,8 +2,13 @@ import os
 import json
 import logging
 from typing import List, Dict, Any, Generator, Optional
+from app.agents.query_rewriter import classify_intent
+from app.agents.reranker import deduplicate_sources, compute_confidence_score
 
 logger = logging.getLogger(__name__)
+
+# Minimum confidence score threshold required to attempt grounded RAG generation
+MIN_CONFIDENCE_THRESHOLD = 35
 
 # System Prompt Template for Grounded QA
 SYSTEM_PROMPT = """You are an Enterprise Knowledge Assistant. Your job is to answer employee queries using ONLY the provided company documentation snippets below.
@@ -39,23 +44,32 @@ class LLMClient:
     def generate_response(self, query: str, context_chunks: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
         Task B4: Generates a grounded response using Groq/Gemini API or intelligent grounding fallback.
+        Includes intent classification greeting handling, confidence threshold refusal, and deduplicated cited sources.
         """
-        prompt_content = self._build_prompt_payload(query, context_chunks)
-        
-        # Prepare sources metadata
-        sources = []
-        for idx, chunk in enumerate(context_chunks, 1):
-            meta = chunk.get("metadata", {})
-            sources.append({
-                "source_id": idx,
-                "title": meta.get("title") or meta.get("doc_id") or f"Document {idx}",
-                "department": meta.get("department", "General"),
-                "security_level": meta.get("security_level", "Internal"),
-                "doc_id": meta.get("doc_id", ""),
-                "score": chunk.get("rerank_score", chunk.get("score", 0.0))
-            })
+        # 1. Greeting Handler (Skip RAG & LLM context synthesis)
+        if classify_intent(query) == "GREETING":
+            return {
+                "answer": "Hello! How can I help you today? Feel free to ask any questions regarding company policies, engineering standards, financial guidelines, or legal compliance.",
+                "sources": [],
+                "confidence_score": 100
+            }
 
-        # Try Groq API if key is present
+        # 2. Deduplicate sources & compute confidence score
+        unique_sources = deduplicate_sources(context_chunks)
+        confidence_score = compute_confidence_score(context_chunks)
+
+        # 3. Confidence Threshold Guard: If confidence < 35%, refuse ungrounded generation
+        if confidence_score < MIN_CONFIDENCE_THRESHOLD or not context_chunks:
+            logger.info(f"Low retrieval confidence ({confidence_score}%) for query '{query}'. Returning fallback refusal.")
+            return {
+                "answer": "I couldn't find relevant information in the enterprise knowledge base regarding your request. Please try rephrasing your question or ask about our HR policies, engineering standards, finance procedures, or legal compliance.",
+                "sources": [],
+                "confidence_score": max(5, confidence_score)
+            }
+
+        prompt_content = self._build_prompt_payload(query, context_chunks)
+
+        # 4. Try Groq API if key is present
         if self.groq_api_key:
             try:
                 import requests
@@ -74,28 +88,25 @@ class LLMClient:
                 res = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data, timeout=15)
                 if res.status_code == 200:
                     answer = res.json()["choices"][0]["message"]["content"]
-                    return {"answer": answer, "sources": sources}
+                    return {"answer": answer, "sources": unique_sources, "confidence_score": confidence_score}
             except Exception as e:
                 logger.warning(f"Groq API call failed: {str(e)}. Falling back.")
 
-        # Grounded Fallback Synthesizer if API keys are not provided
-        if not context_chunks:
-            answer = "Based on available authorized documents, I could not find relevant information to answer your request."
-        else:
-            snippets_summary = []
-            for s in sources:
-                snippets_summary.append(f"• **{s['title']}** ({s['department']} Department - Security: {s['security_level']})")
-            
-            summary_list = "\n".join(snippets_summary)
-            first_chunk_text = context_chunks[0].get("text", "")[:300]
-            
-            answer = (
-                f"Based on retrieved company documentation for **{query}**:\n\n"
-                f"{first_chunk_text}...\n\n"
-                f"**Referenced Sources:**\n{summary_list}"
-            )
+        # 5. Grounded Fallback Synthesizer if API keys are not provided
+        snippets_summary = []
+        for s in unique_sources:
+            snippets_summary.append(f"• **{s['title']}** ({s['department']} Department - Security: {s['security_level']})")
+        
+        summary_list = "\n".join(snippets_summary)
+        first_chunk_text = context_chunks[0].get("text", "")[:300]
+        
+        answer = (
+            f"Based on retrieved company documentation for **{query}**:\n\n"
+            f"{first_chunk_text}...\n\n"
+            f"**Referenced Sources:**\n{summary_list}"
+        )
 
-        return {"answer": answer, "sources": sources}
+        return {"answer": answer, "sources": unique_sources, "confidence_score": confidence_score}
 
     def generate_stream(self, query: str, context_chunks: List[Dict[str, Any]]) -> Generator[str, None, None]:
         """

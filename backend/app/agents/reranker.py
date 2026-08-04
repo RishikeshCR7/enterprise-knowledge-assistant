@@ -1,3 +1,4 @@
+import math
 import logging
 from typing import List, Dict, Any, Optional
 
@@ -5,6 +6,78 @@ logger = logging.getLogger(__name__)
 
 # Cross-Encoder model name for pass/query re-ranking
 CROSS_ENCODER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+
+def compute_confidence_score(reranked_chunks: List[Dict[str, Any]]) -> int:
+    """
+    Computes an aggregate Confidence Score (0-100%) based on top reranker relevance scores.
+    Handles Cross-Encoder logits, RRF scores, and raw vector similarity distances.
+    """
+    if not reranked_chunks:
+        return 0
+
+    top_chunk = reranked_chunks[0]
+
+    # 1. If Cross-Encoder logit is present (typically -10 to +10)
+    if "rerank_score" in top_chunk:
+        top_score = top_chunk["rerank_score"]
+        prob = 1.0 / (1.0 + math.exp(-float(top_score)))
+        confidence = int(round(prob * 100))
+        return max(15, min(99, confidence))
+
+    # 2. If RRF score or similarity score is present
+    top_score = top_chunk.get("rrf_score", top_chunk.get("score", 0.0))
+    if isinstance(top_score, (float, int)):
+        if top_score <= 0.04:
+            # Max RRF score for rank #1 in vector and rank #1 in BM25 is ~0.03278
+            prob = min(1.0, float(top_score) / 0.03278)
+            confidence = int(round(prob * 95))
+            return max(15, min(99, confidence))
+        elif top_score <= 1.0:
+            confidence = int(round(float(top_score) * 100))
+            return max(15, min(99, confidence))
+        else:
+            prob = 1.0 / (1.0 + math.exp(-float(top_score)))
+            confidence = int(round(prob * 100))
+            return max(15, min(99, confidence))
+
+    return 50
+
+
+def deduplicate_sources(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Deduplicates retrieved chunks into unique cited sources strictly by document Title.
+    """
+    seen_titles: Dict[str, Dict[str, Any]] = {}
+    
+    for idx, chunk in enumerate(chunks, 1):
+        meta = chunk.get("metadata", {})
+        if hasattr(meta, "to_chroma_metadata"):
+            meta = meta.to_chroma_metadata()
+
+        title = meta.get("title") or meta.get("doc_id") or f"Document {idx}"
+        title_key = title.strip().lower()
+        dept = meta.get("department", "General")
+        sec_level = meta.get("security_level", "Internal")
+        doc_id = meta.get("doc_id", f"doc_{idx}")
+        score = chunk.get("rerank_score", chunk.get("score", 0.0))
+
+        if title_key not in seen_titles:
+            seen_titles[title_key] = {
+                "source_id": len(seen_titles) + 1,
+                "title": title,
+                "department": dept,
+                "security_level": sec_level,
+                "doc_id": doc_id,
+                "score": score,
+                "chunk_count": 1
+            }
+        else:
+            seen_titles[title_key]["chunk_count"] += 1
+            if score > seen_titles[title_key]["score"]:
+                seen_titles[title_key]["score"] = score
+
+    return list(seen_titles.values())
 
 
 class CrossEncoderReranker:

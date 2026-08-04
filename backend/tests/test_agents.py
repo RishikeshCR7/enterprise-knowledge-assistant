@@ -1,27 +1,45 @@
-from app.agents.query_rewriter import rewrite_query
+from app.agents.query_rewriter import rewrite_query, classify_intent
 from app.agents.rag_graph import rag_graph
+from app.agents.reranker import deduplicate_sources, compute_confidence_score
 from app.rbac.roles import UserRole, Department
+
+
+def test_intent_classification():
+    assert classify_intent("hi") == "GREETING"
+    assert classify_intent("hello") == "GREETING"
+    assert classify_intent("what are my timings") == "ENTERPRISE_SEARCH"
+    assert classify_intent("vacation policy") == "ENTERPRISE_SEARCH"
 
 
 def test_query_rewriter():
     user_context = {"department": "HR", "role": "HR"}
-    raw_query = "Vacation policy?"
+    raw_query = "what are my timings"
 
     rewritten = rewrite_query(raw_query, user_context)
-    print(f"[TEST B1] Raw: '{raw_query}' -> Rewritten: '{rewritten}'")
+    assert "office working hours" in rewritten
 
-    assert "Vacation policy?" in rewritten
-    assert "official HR leave policy" in rewritten
-    assert "[HR Department]" in rewritten
-    print("[OK] Task B1 query_rewriter test passed!")
+    greeting_rewrite = rewrite_query("hi", user_context)
+    assert greeting_rewrite == "hi"
 
 
-def test_langgraph_workflow():
+def test_source_deduplication():
+    chunks = [
+        {"text": "c1", "metadata": {"doc_id": "doc1", "title": "HR Policy"}},
+        {"text": "c2", "metadata": {"doc_id": "doc1", "title": "HR Policy"}},
+        {"text": "c3", "metadata": {"doc_id": "doc2", "title": "Coding Standard"}}
+    ]
+    unique = deduplicate_sources(chunks)
+    assert len(unique) == 2
+    assert unique[0]["title"] == "HR Policy"
+    assert unique[1]["title"] == "Coding Standard"
+
+
+def test_greeting_langgraph_workflow():
     initial_state = {
-        "question": "What is the vacation policy?",
+        "question": "hi",
         "user_context": {
             "user_id": "test_user_01",
-            "username": "rishi",
+            "username": "user",
             "role": UserRole.HR.value,
             "department": Department.HR.value,
         },
@@ -31,24 +49,35 @@ def test_langgraph_workflow():
         "filtered_docs": None,
         "generation": None,
         "sources": None,
+        "confidence_score": None,
         "is_safe": None,
     }
 
     final_state = rag_graph.invoke(initial_state)
-
-    print("[TEST B2] LangGraph Execution Output:")
-    print(f"  Rewritten Query: {final_state.get('rewritten_query')}")
-    print(f"  Retrieved Chunks: {len(final_state.get('retrieved_docs') or [])}")
-    print(f"  Reranked Chunks: {len(final_state.get('reranked_docs') or [])}")
-    print(f"  Generation: {final_state.get('generation')[:60]}...")
-    print(f"  Is Safe: {final_state.get('is_safe')}")
-
-    assert final_state.get("rewritten_query") is not None
-    assert final_state.get("is_safe") is True
-    print("[OK] Task B2 langgraph_workflow test passed!")
+    assert "Hello!" in final_state["generation"]
+    assert len(final_state["sources"]) == 0
+    assert final_state["confidence_score"] == 100
 
 
-if __name__ == "__main__":
-    test_query_rewriter()
-    test_langgraph_workflow()
-    print("[OK] All Task B1 & Task B2 tests completed successfully!")
+def test_low_confidence_refusal_workflow():
+    initial_state = {
+        "question": "wtf",
+        "user_context": {
+            "user_id": "test_user_01",
+            "username": "user",
+            "role": UserRole.HR.value,
+            "department": Department.HR.value,
+        },
+        "rewritten_query": None,
+        "retrieved_docs": None,
+        "reranked_docs": None,
+        "filtered_docs": None,
+        "generation": None,
+        "sources": None,
+        "confidence_score": None,
+        "is_safe": None,
+    }
+
+    final_state = rag_graph.invoke(initial_state)
+    assert "couldn't find relevant information" in final_state["generation"].lower()
+    assert len(final_state["sources"]) == 0
