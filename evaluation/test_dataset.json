@@ -1,42 +1,72 @@
 [
   {
     "id": "eval_01",
-    "query": "What is the annual leave paid time off entitlement for full-time employees?",
+    "query": "What is the annual leave paid time off entitlement?",
     "department": "HR",
-    "expected_doc_id": "doc_hr_LeavePolicy_pdf",
-    "reference_answer": "Employees are entitled to 20 business days of paid annual leave per calendar year, accrued monthly at a rate of 1.66 days.",
-    "expected_keywords": ["20 business days", "annual leave", "1.66 days"]
+    "expected_keywords": ["leave", "paid time off", "vacation", "days"],
+    "expected_doc_id": "doc_hr_leave_policy_2026"
   },
   {
     "id": "eval_02",
-    "query": "What software engineering python code formatting and typing tools must pass before PR submission?",
-    "department": "Engineering",
-    "expected_doc_id": "doc_engineering_CodingStandards_pdf",
-    "reference_answer": "All python code must pass Black formatting, Flake8 linting, and MyPy type checking before PR submission.",
-    "expected_keywords": ["Black", "Flake8", "MyPy", "PEP 8"]
+    "query": "What are my ethics and code of conduct rules?",
+    "department": "HR",
+    "expected_keywords": ["integrity", "honesty", "harassment", "whistleblower"],
+    "expected_doc_id": "doc_hr_ethics_policy"
   },
   {
     "id": "eval_03",
-    "query": "What is the daily per diem meal allowance limit for corporate business travel?",
+    "query": "What are the company's financial results and revenue for Q2 2026?",
     "department": "Finance",
-    "expected_doc_id": "doc_finance_ExpensePolicy_pdf",
-    "reference_answer": "Daily per diem meal allowance is capped at $75 per day with itemized receipts required for expenses over $25.",
-    "expected_keywords": ["$75 per day", "meal allowance", "itemized receipts"]
+    "expected_keywords": ["revenue", "profit", "margin", "expenses"],
+    "expected_doc_id": "doc_fin_q2_2026_report"
   },
   {
     "id": "eval_04",
-    "query": "How many days notice is required before Master Service Agreement vendor contract renewal?",
-    "department": "Legal",
-    "expected_doc_id": "doc_legal_VendorAgreement_pdf",
-    "reference_answer": "Master Service Agreements automatically renew unless written notice is given 60 days prior.",
-    "expected_keywords": ["60 days", "written notice", "automatically renew"]
+    "query": "What is the per diem meal allowance for corporate travel?",
+    "department": "Finance",
+    "expected_keywords": ["per diem", "allowance", "meal", "$75"],
+    "expected_doc_id": "doc_fin_expense_policy"
   },
   {
     "id": "eval_05",
-    "query": "What is the starting base platform enterprise sales contract license price?",
+    "query": "What Kubernetes architecture guidelines do we follow for microservices?",
+    "department": "Engineering",
+    "expected_keywords": ["kubernetes", "eks", "microservices", "pods"],
+    "expected_doc_id": "doc_eng_kubernetes_guide"
+  },
+  {
+    "id": "eval_06",
+    "query": "What is our incident response procedure for P1 outages?",
+    "department": "Engineering",
+    "expected_keywords": ["incident", "outage", "post-mortem", "commander"],
+    "expected_doc_id": "doc_eng_incident_response"
+  },
+  {
+    "id": "eval_07",
+    "query": "Can I accept gifts from vendors under anti-bribery policies?",
+    "department": "Legal",
+    "expected_keywords": ["gifts", "bribery", "$50", "fcpa"],
+    "expected_doc_id": "doc_leg_compliance_manual"
+  },
+  {
+    "id": "eval_08",
+    "query": "What is our GDPR personal data retention policy?",
+    "department": "Legal",
+    "expected_keywords": ["gdpr", "retention", "pii", "encryption"],
+    "expected_doc_id": "doc_leg_gdpr_privacy"
+  },
+  {
+    "id": "eval_09",
+    "query": "What is the discount approval matrix for enterprise sales deals?",
     "department": "Sales",
-    "expected_doc_id": "doc_sales_SalesStrategy_pdf",
-    "reference_answer": "Base platform license starts at $50,000 per year with tier discounts for additional user seats.",
-    "expected_keywords": ["$50,000", "base platform license", "year"]
+    "expected_keywords": ["discount", "approval", "enterprise", "matrix"],
+    "expected_doc_id": "doc_sales_playbook_2026"
+  },
+  {
+    "id": "eval_10",
+    "query": "wtf",
+    "department": "General",
+    "expected_keywords": ["refusal", "rephrasing", "unclear"],
+    "expected_doc_id": null
   }
 ]
