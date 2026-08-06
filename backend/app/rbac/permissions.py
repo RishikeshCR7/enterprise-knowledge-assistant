@@ -14,6 +14,7 @@ ROLE_DEPARTMENT_ACCESS: Dict[UserRole, Set[Department]] = {
         Department.FINANCE,
         Department.LEGAL,
         Department.SALES,
+        Department.EXECUTIVE,
     },
 }
 

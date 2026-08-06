@@ -10,8 +10,9 @@ env/
 # Byte-compiled / optimized / DLL files
 *.so
 
-# Vector DB & Storage
+# Vector DB & Data Storage
 chroma_db/
+backend/chroma_db/
 *.chroma
 *.sqlite3
 

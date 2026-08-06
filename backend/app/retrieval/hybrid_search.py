@@ -1,13 +1,20 @@
 import logging
 import re
 from typing import List, Dict, Any, Optional
-from rank_bm25 import BM25Okapi
+
+logger = logging.getLogger(__name__)
+
+try:
+    from rank_bm25 import BM25Okapi
+    HAS_BM25 = True
+except ImportError:
+    BM25Okapi = None
+    HAS_BM25 = False
+    logger.warning("rank_bm25 package not installed. Hybrid search will fallback to vector search.")
 
 from app.database.chroma_store import chroma_store, build_chroma_filter
 from app.rbac.permissions import can_access_document
 from app.rbac.roles import UserContext
-
-logger = logging.getLogger(__name__)
 
 
 def tokenize_text(text: str) -> List[str]:
@@ -24,7 +31,7 @@ class BM25Indexer:
     In-memory BM25 indexer wrapping rank_bm25.BM25Okapi over indexed ChromaDB document chunks.
     """
     def __init__(self):
-        self.bm25: Optional[BM25Okapi] = None
+        self.bm25: Optional[Any] = None
         self.corpus_chunks: List[Dict[str, Any]] = []
         self._is_indexed = False
 
@@ -32,6 +39,9 @@ class BM25Indexer:
         """
         Loads document chunks from ChromaDB and builds BM25 index.
         """
+        if not HAS_BM25:
+            return
+
         current_count = chroma_store.collection.count()
         if self._is_indexed and not force_refresh and len(self.corpus_chunks) == current_count:
             return
@@ -61,7 +71,7 @@ class BM25Indexer:
             tokens = tokenize_text(docs[i])
             tokenized_corpus.append(tokens if tokens else [""])
 
-        if tokenized_corpus:
+        if tokenized_corpus and BM25Okapi is not None:
             self.bm25 = BM25Okapi(tokenized_corpus)
             logger.info(f"Successfully built BM25 index with {len(self.corpus_chunks)} document chunks.")
         
@@ -77,6 +87,9 @@ class BM25Indexer:
         """
         Performs BM25 keyword search over indexed chunks.
         """
+        if not HAS_BM25:
+            return []
+
         self.build_index()
 
         if not self.bm25 or not self.corpus_chunks:
@@ -139,6 +152,9 @@ class HybridRetriever:
         """
         Calculates RRF score: RRF_score(d) = 1/(k + rank_vector(d)) + 1/(k + rank_bm25(d))
         """
+        if not bm25_results:
+            return vector_results[:top_k]
+
         scores: Dict[str, float] = {}
         chunk_map: Dict[str, Dict[str, Any]] = {}
 
@@ -162,7 +178,6 @@ class HybridRetriever:
         for cid in sorted_cids[:top_k]:
             chunk_copy = dict(chunk_map[cid])
             chunk_copy["rrf_score"] = round(scores[cid], 5)
-            # Retain high-level score representation
             chunk_copy["score"] = round(scores[cid], 5)
             fused_results.append(chunk_copy)
 

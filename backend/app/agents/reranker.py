@@ -70,6 +70,7 @@ def deduplicate_sources(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
                 "security_level": sec_level,
                 "doc_id": doc_id,
                 "score": score,
+                "text": chunk.get("text", ""),
                 "chunk_count": 1
             }
         else:

@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 # Minimum confidence score threshold required to attempt grounded RAG generation
 MIN_CONFIDENCE_THRESHOLD = 35
 
-# System Prompt Template for Grounded QA
 SYSTEM_PROMPT = """You are an Enterprise Knowledge Assistant. Your job is to answer employee queries using ONLY the provided company documentation snippets below.
 
 Rules:
@@ -19,6 +18,23 @@ Rules:
 3. If the provided context does not contain enough information, state clearly: "Based on available authorized documents, I cannot find enough information to answer this question."
 4. Be professional, clear, and direct.
 """
+
+# Keywords mapping queries to target enterprise departments
+DEPT_QUERY_KEYWORDS = {
+    "Engineering": ["coding", "code", "engineering", "api", "docker", "architecture", "software", "dev"],
+    "HR": ["hr", "leave", "vacation", "hiring", "salary", "remuneration", "pto", "payroll", "interview"],
+    "Finance": ["finance", "budget", "expense", "reimbursement", "expenditure", "accounting", "cost"],
+    "Legal": ["legal", "contract", "nda", "compliance", "agreement", "vendor", "policy"],
+    "Sales": ["sales", "pricing", "discount", "deal", "client", "onboarding", "customer"]
+}
+
+
+def _detect_target_department(query: str) -> Optional[str]:
+    query_lower = query.lower()
+    for dept, keywords in DEPT_QUERY_KEYWORDS.items():
+        if any(kw in query_lower for kw in keywords):
+            return dept
+    return None
 
 
 class LLMClient:
@@ -41,12 +57,17 @@ class LLMClient:
         context_str = "\n\n".join(formatted_context)
         return f"Context Documentation:\n{context_str}\n\nUser Question: {query}"
 
-    def generate_response(self, query: str, context_chunks: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def generate_response(
+        self,
+        query: str,
+        context_chunks: List[Dict[str, Any]],
+        user_context: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """
-        Task B4: Generates a grounded response using Groq/Gemini API or intelligent grounding fallback.
-        Includes intent classification greeting handling, confidence threshold refusal, and deduplicated cited sources.
+        Generates grounded RAG response.
+        If no authorized context chunks are retrieved, constructs a clear, role-aware RBAC security notification.
         """
-        # 1. Greeting Handler (Skip RAG & LLM context synthesis)
+        # 1. Greeting Handler
         if classify_intent(query) == "GREETING":
             return {
                 "answer": "Hello! How can I help you today? Feel free to ask any questions regarding company policies, engineering standards, financial guidelines, or legal compliance.",
@@ -58,14 +79,38 @@ class LLMClient:
         unique_sources = deduplicate_sources(context_chunks)
         confidence_score = compute_confidence_score(context_chunks)
 
-        # 3. Confidence Threshold Guard: If confidence < 35%, refuse ungrounded generation
+        # 3. Role-Aware RBAC Access Refusal Handler
         if confidence_score < MIN_CONFIDENCE_THRESHOLD or not context_chunks:
-            logger.info(f"Low retrieval confidence ({confidence_score}%) for query '{query}'. Returning fallback refusal.")
-            return {
-                "answer": "I couldn't find relevant information in the enterprise knowledge base regarding your request. Please try rephrasing your question or ask about our HR policies, engineering standards, finance procedures, or legal compliance.",
-                "sources": [],
-                "confidence_score": max(5, confidence_score)
-            }
+            user_role = (user_context.get("role") if user_context else "Employee") or "Employee"
+            user_dept = (user_context.get("department") if user_context else "General") or "General"
+            target_dept = _detect_target_department(query)
+
+            if target_dept and target_dept != user_dept and user_role != "Executive":
+                # Clear RBAC Security Access Denied Notice
+                rbac_denied_msg = (
+                    f"🔒 **Access Restricted by Role-Based Access Control (RBAC)**\n\n"
+                    f"As an **{user_role}** ({user_dept} Department), your security clearance is restricted to **{user_dept}** documentation.\n\n"
+                    f"The requested query pertains to **{target_dept}** records, which require **{target_dept}** or **Executive** clearance. "
+                    f"No authorized documents were retrieved for your role profile.\n\n"
+                    f"💡 *To view this information, please request access from your administrator or switch to an authorized role profile (such as {target_dept} Specialist or Executive Manager).* "
+                )
+                return {
+                    "answer": rbac_denied_msg,
+                    "sources": [],
+                    "confidence_score": 10
+                }
+            else:
+                scope_desc = "Enterprise-wide" if user_role == "Executive" else f"**{user_dept}**"
+                no_doc_msg = (
+                    f"⚠️ **No Matching Documents Found**\n\n"
+                    f"I could not find matching authorized documents in the {scope_desc} knowledge base for your query: *\"{query}\"*.\n\n"
+                    f"Please try rephrasing your question or check the document library."
+                )
+                return {
+                    "answer": no_doc_msg,
+                    "sources": [],
+                    "confidence_score": 15
+                }
 
         prompt_content = self._build_prompt_payload(query, context_chunks)
 
@@ -108,11 +153,16 @@ class LLMClient:
 
         return {"answer": answer, "sources": unique_sources, "confidence_score": confidence_score}
 
-    def generate_stream(self, query: str, context_chunks: List[Dict[str, Any]]) -> Generator[str, None, None]:
+    def generate_stream(
+        self,
+        query: str,
+        context_chunks: List[Dict[str, Any]],
+        user_context: Optional[Dict[str, Any]] = None
+    ) -> Generator[str, None, None]:
         """
         Task B5: Streams response tokens for live streaming chat output.
         """
-        result = self.generate_response(query, context_chunks)
+        result = self.generate_response(query, context_chunks, user_context=user_context)
         answer = result["answer"]
         
         # Stream word by word for live token rendering

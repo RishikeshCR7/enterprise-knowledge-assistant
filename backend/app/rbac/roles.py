@@ -18,6 +18,7 @@ class Department(str, Enum):
     FINANCE = "Finance"
     LEGAL = "Legal"
     SALES = "Sales"
+    EXECUTIVE = "Executive"
 
 
 class SecurityLevel(str, Enum):

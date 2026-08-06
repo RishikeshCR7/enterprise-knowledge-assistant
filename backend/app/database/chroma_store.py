@@ -24,7 +24,7 @@ def build_chroma_filter(
     """
     conditions = []
 
-    if department:
+    if department and department != "Executive":
         conditions.append({"department": department})
 
     if security_level:
