@@ -4,7 +4,7 @@ from app.ingestion.parser import DocumentParser
 from app.ingestion.chunker import DocumentChunker
 from app.models.document import DocumentMetadata
 
-DATA_DIR = "/Users/pooja/Documents/GitHub/enterprise-knowledge-assistant/data"
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 
 
 def test_pdf_parser_and_chunker():

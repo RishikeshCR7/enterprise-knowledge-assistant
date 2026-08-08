@@ -53,5 +53,16 @@
     "role": "HR",
     "timestamp": 1786192012.344919,
     "created_at": "2026-08-08 17:56:52"
+  },
+  {
+    "id": "fb_1786194269393",
+    "question": "What is the vacation policy?",
+    "answer": "Employees get 20 paid vacation days per year.",
+    "rating": 1,
+    "feedback_text": "Accurate and clear citation.",
+    "user_id": "rishi_test",
+    "role": "HR",
+    "timestamp": 1786194269.39312,
+    "created_at": "2026-08-08 18:34:29"
   }
 ]

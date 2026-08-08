@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 client = TestClient(app)
-DATA_DIR = "/Users/pooja/Documents/GitHub/enterprise-knowledge-assistant/data"
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 
 
 def test_health_check():
