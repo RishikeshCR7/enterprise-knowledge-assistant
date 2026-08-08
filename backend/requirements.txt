@@ -16,3 +16,5 @@ tqdm
 numpy
 pandas
 rank-bm25
+pytest
+pytest-asyncio
