@@ -1,7 +1,9 @@
+import os
 import time
 import uuid
 import logging
 from typing import Dict, Any, Optional
+from app.config.settings import settings
 from app.database.eval_db import eval_db
 
 logger = logging.getLogger(__name__)
@@ -9,6 +11,27 @@ logger = logging.getLogger(__name__)
 # Token cost estimation ($0.0001 per 1k prompt tokens, $0.0002 per 1k completion tokens)
 PROMPT_COST_PER_1K = 0.0001
 COMPLETION_COST_PER_1K = 0.0002
+
+
+def setup_langsmith_tracing() -> bool:
+    """
+    Task A4: Configures LangSmith observability environment variables for tracing LLM & LangGraph calls.
+    """
+    if settings.LANGCHAIN_TRACING_V2 and settings.LANGCHAIN_TRACING_V2.lower() == "true":
+        os.environ["LANGCHAIN_TRACING_V2"] = "true"
+        os.environ["LANGCHAIN_ENDPOINT"] = settings.LANGCHAIN_ENDPOINT
+        os.environ["LANGCHAIN_PROJECT"] = settings.LANGCHAIN_PROJECT
+        if settings.LANGCHAIN_API_KEY:
+            os.environ["LANGCHAIN_API_KEY"] = settings.LANGCHAIN_API_KEY
+        logger.info(f"LangSmith Tracing ENABLED for project: {settings.LANGCHAIN_PROJECT}")
+        return True
+    else:
+        logger.info("LangSmith Tracing disabled (LANGCHAIN_TRACING_V2=false).")
+        return False
+
+
+# Execute tracing configuration setup on module load
+setup_langsmith_tracing()
 
 
 class TelemetryTracker:
