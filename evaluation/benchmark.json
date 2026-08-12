@@ -1,0 +1,359 @@
+[
+  {
+    "id": "bench_01",
+    "query": "What is the annual paid leave entitlement for full-time employees?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_leave_policy_2026",
+    "expected_keywords": ["paid leave", "24 annual", "sick leave", "parental leave"]
+  },
+  {
+    "id": "bench_02",
+    "query": "What are the core ethical rules and code of conduct standards?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_ethics_policy",
+    "expected_keywords": ["integrity", "honesty", "harassment", "whistleblower"]
+  },
+  {
+    "id": "bench_03",
+    "query": "What health insurance and 401k benefits are offered?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_benefits_handbook",
+    "expected_keywords": ["health", "dental", "401(k)", "wellness stipend"]
+  },
+  {
+    "id": "bench_04",
+    "query": "What is the company remote work and hybrid schedule policy?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_remote_work",
+    "expected_keywords": ["3 days", "remotely", "collaboration hours", "stipend"]
+  },
+  {
+    "id": "bench_05",
+    "query": "How often do performance reviews happen and what are the merit salary increases?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_performance_review",
+    "expected_keywords": ["bi-annually", "June", "December", "merit salary"]
+  },
+  {
+    "id": "bench_06",
+    "query": "What is the structured interview panel process for hiring candidates?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_hiring_sop",
+    "expected_keywords": ["4 stages", "recruiter screen", "technical assessment", "system design"]
+  },
+  {
+    "id": "bench_07",
+    "query": "What is our diversity, equity, and inclusion target representation?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_diversity_policy",
+    "expected_keywords": ["45% representation", "bias training", "inclusive"]
+  },
+  {
+    "id": "bench_08",
+    "query": "What is the required notice period for employee offboarding?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_exit_process",
+    "expected_keywords": ["30 days", "60 days", "hardware", "exit interview"]
+  },
+  {
+    "id": "bench_09",
+    "query": "What is the workplace anti-harassment complaint investigation timeline?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_workplace_harassment",
+    "expected_keywords": ["zero tolerance", "5 business days", "confidentially"]
+  },
+  {
+    "id": "bench_10",
+    "query": "What guidelines are outlined in the employee handbook?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_employee_handbook",
+    "expected_keywords": ["mission", "core values", "dress code", "attendance"]
+  },
+
+  {
+    "id": "bench_11",
+    "query": "What was the company's total revenue and net profit in Q2 2026?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_q2_2026_report",
+    "expected_keywords": ["$42.5 Million", "18.4% Year-over-Year", "22.1%"]
+  },
+  {
+    "id": "bench_12",
+    "query": "What is the approved annual operating budget for FY2026?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_budget_fy2026",
+    "expected_keywords": ["$140 Million", "Engineering (40%)", "Sales & Marketing"]
+  },
+  {
+    "id": "bench_13",
+    "query": "What is the per diem meal allowance cap for corporate travel?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_expense_policy",
+    "expected_keywords": ["$75 per day", "economy", "receipts", "30 days"]
+  },
+  {
+    "id": "bench_14",
+    "query": "When are vendor purchases required to go through competitive bidding?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_procurement_guide",
+    "expected_keywords": ["$10,000", "3 vendor quotes", "purchase orders"]
+  },
+  {
+    "id": "bench_15",
+    "query": "How frequently are employee salaries disbursed?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_payroll_guidelines",
+    "expected_keywords": ["bi-weekly", "Fridays", "direct deposit", "bonus"]
+  },
+
+  {
+    "id": "bench_16",
+    "query": "What CPU and memory specs are required for Kubernetes pods?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_kubernetes_guide",
+    "expected_keywords": ["EKS", "HPA", "250m", "512Mi"]
+  },
+  {
+    "id": "bench_17",
+    "query": "What is the response timeline for a P1 production outage incident?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_incident_response",
+    "expected_keywords": ["5 minutes", "15 minutes", "48 hours", "post-mortem"]
+  },
+  {
+    "id": "bench_18",
+    "query": "What automated static analysis tools run in our CI/CD pipeline?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_cicd_pipeline",
+    "expected_keywords": ["pytest", "SonarQube", "Trivy", "2 approval"]
+  },
+  {
+    "id": "bench_19",
+    "query": "What security hygiene standards must Docker container images follow?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_docker_standards",
+    "expected_keywords": ["minimal Alpine", "non-root user", "UID 10001", "Vault"]
+  },
+  {
+    "id": "bench_20",
+    "query": "What coding style rules must Python developers adhere to?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_coding_style",
+    "expected_keywords": ["PEP 8", "type hints", "strict null checks", "ESLint"]
+  },
+
+  {
+    "id": "bench_21",
+    "query": "Can employees accept gifts exceeding $50 from commercial partners?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_compliance_manual",
+    "expected_keywords": ["FCPA", "Bribery Act", "$50 value", "prohibition"]
+  },
+  {
+    "id": "bench_22",
+    "query": "What encryption standard is required for personal identifiable information (PII)?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_gdpr_privacy",
+    "expected_keywords": ["AES-256", "TLS 1.3", "DSAR", "30 days"]
+  },
+  {
+    "id": "bench_23",
+    "query": "How many years must financial records be retained under corporate archival policy?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_data_retention",
+    "expected_keywords": ["7 years", "5 years", "litigation hold", "1 year"]
+  },
+
+  {
+    "id": "bench_24",
+    "query": "What discount percentage requires VP of Sales approval?",
+    "category": "Sales",
+    "expected_doc_id": "doc_sales_playbook_2026",
+    "expected_keywords": ["$50,000", "10%", "25%", "VP Sales"]
+  },
+  {
+    "id": "bench_25",
+    "query": "Within how many days of closing a deal must a customer kickoff call be scheduled?",
+    "category": "Sales",
+    "expected_doc_id": "doc_sales_onboarding_sop",
+    "expected_keywords": ["3 business days", "60-day onboarding", "QBRs"]
+  },
+
+  {
+    "id": "bench_26",
+    "query": "What is the annual leave vacation policy for software engineers?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_leave_policy_2026",
+    "expected_keywords": ["leave", "24 annual", "paid time off"]
+  },
+  {
+    "id": "bench_27",
+    "query": "What are the rules regarding gifts and anti-bribery compliance?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_compliance_manual",
+    "expected_keywords": ["bribery", "gifts", "$50"]
+  },
+  {
+    "id": "bench_28",
+    "query": "How are executive bonuses and merit salary increases calculated?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_performance_review",
+    "expected_keywords": ["evaluations", "OKR", "merit salary"]
+  },
+  {
+    "id": "bench_29",
+    "query": "What container base image must be used for Docker builds?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_docker_standards",
+    "expected_keywords": ["Alpine", "Distroless", "non-root"]
+  },
+  {
+    "id": "bench_30",
+    "query": "How is financial data retention enforced during litigation holds?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_data_retention",
+    "expected_keywords": ["7 years", "litigation hold", "immutable"]
+  },
+
+  {
+    "id": "bench_31",
+    "query": "What is the policy on whistleblower protection?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_ethics_policy",
+    "expected_keywords": ["whistleblower", "retaliation", "ethical breaches"]
+  },
+  {
+    "id": "bench_32",
+    "query": "What is the gym and wellness stipend allowance per month?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_benefits_handbook",
+    "expected_keywords": ["$100/month", "wellness stipend", "gym"]
+  },
+  {
+    "id": "bench_33",
+    "query": "What are the core collaboration hours for remote employees?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_remote_work",
+    "expected_keywords": ["10:00 AM to 4:00 PM", "core collaboration", "remote"]
+  },
+  {
+    "id": "bench_34",
+    "query": "What stages are included in technical candidate interviewing?",
+    "category": "HR",
+    "expected_doc_id": "doc_hr_hiring_sop",
+    "expected_keywords": ["recruiter screen", "technical assessment", "interview"]
+  },
+  {
+    "id": "bench_35",
+    "query": "What was the operating expense total in Q2 2026?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_q2_2026_report",
+    "expected_keywords": ["$33.1 Million", "operating expenses", "R&D expansion"]
+  },
+  {
+    "id": "bench_36",
+    "query": "What capital expenditure limit is set in the annual budget?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_budget_fy2026",
+    "expected_keywords": ["$12M", "capital expenditures", "operating budget"]
+  },
+  {
+    "id": "bench_37",
+    "query": "What receipts are required for travel expense reimbursement?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_expense_policy",
+    "expected_keywords": ["over $25", "per diem", "reimbursement"]
+  },
+  {
+    "id": "bench_38",
+    "query": "Who must approve purchase orders exceeding $10,000?",
+    "category": "Finance",
+    "expected_doc_id": "doc_fin_procurement_guide",
+    "expected_keywords": ["VP", "Finance Controller", "procurement"]
+  },
+  {
+    "id": "bench_39",
+    "query": "How many replicas run in production microservices clusters?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_kubernetes_guide",
+    "expected_keywords": ["min 3 replicas", "max 20", "EKS"]
+  },
+  {
+    "id": "bench_40",
+    "query": "When must a blameless post-mortem be conducted following a P1 incident?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_incident_response",
+    "expected_keywords": ["within 48 hours", "post-mortem", "P1"]
+  },
+  {
+    "id": "bench_41",
+    "query": "How many pull request approval reviews are mandated before merging to main?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_cicd_pipeline",
+    "expected_keywords": ["2 approval reviews", "branch protection", "merge"]
+  },
+  {
+    "id": "bench_42",
+    "query": "What port or UID must Docker containers run as?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_docker_standards",
+    "expected_keywords": ["UID 10001", "non-root", "security"]
+  },
+  {
+    "id": "bench_43",
+    "query": "What static code analysis tool checks TypeScript code?",
+    "category": "Engineering",
+    "expected_doc_id": "doc_eng_coding_style",
+    "expected_keywords": ["ESLint", "strict null checks", "TypeScript"]
+  },
+  {
+    "id": "bench_44",
+    "query": "What is the maximum response window for a GDPR Data Subject Access Request (DSAR)?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_gdpr_privacy",
+    "expected_keywords": ["30 days", "DSAR", "privacy"]
+  },
+  {
+    "id": "bench_45",
+    "query": "How long are server audit logs retained under corporate guidelines?",
+    "category": "Legal",
+    "expected_doc_id": "doc_leg_data_retention",
+    "expected_keywords": ["1 year", "server audit logs", "retention"]
+  },
+  {
+    "id": "bench_46",
+    "query": "What is the minimum annual enterprise tier contract pricing?",
+    "category": "Sales",
+    "expected_doc_id": "doc_sales_playbook_2026",
+    "expected_keywords": ["$50,000/year", "Enterprise Tier", "sales"]
+  },
+  {
+    "id": "bench_47",
+    "query": "Who is assigned to new enterprise clients during the 60-day onboarding window?",
+    "category": "Sales",
+    "expected_doc_id": "doc_sales_onboarding_sop",
+    "expected_keywords": ["Implementation Engineer", "60-day onboarding", "customer"]
+  },
+
+  {
+    "id": "bench_48",
+    "query": "wtf",
+    "category": "General",
+    "expected_doc_id": null,
+    "expected_keywords": ["refusal", "unclear"]
+  },
+  {
+    "id": "bench_49",
+    "query": "asdfghjk",
+    "category": "General",
+    "expected_doc_id": null,
+    "expected_keywords": ["refusal", "unclear"]
+  },
+  {
+    "id": "bench_50",
+    "query": "who is the president of Mars?",
+    "category": "General",
+    "expected_doc_id": null,
+    "expected_keywords": ["refusal", "unclear"]
+  }
+]

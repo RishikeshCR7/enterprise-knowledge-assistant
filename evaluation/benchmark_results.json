@@ -1,21 +1,764 @@
 {
-  "sample_count": 5,
-  "vector_only": {
-    "mean_latency_ms": 3.15,
-    "mean_precision": 0.0,
-    "mean_recall": 0.0,
-    "hit_rate_at_k": 0.0
+  "summary": {
+    "total_queries": 50,
+    "mean_context_precision": 0.062,
+    "mean_context_recall": 0.62,
+    "mean_faithfulness": 0.6483,
+    "mean_answer_relevancy": 0.4138,
+    "mean_hallucination_rate": 0.3517,
+    "mean_latency_ms": 369.61,
+    "evaluation_timestamp": "2026-08-12T22:11:57Z"
   },
-  "hybrid_search": {
-    "mean_latency_ms": 1.53,
-    "mean_precision": 0.2,
-    "mean_recall": 0.6,
-    "hit_rate_at_k": 0.8
-  },
-  "improvements": {
-    "precision_gain": 0.2,
-    "recall_gain": 0.6,
-    "hit_rate_gain": 0.8,
-    "latency_difference_ms": -1.62
-  }
+  "detailed_results": [
+    {
+      "id": "bench_01",
+      "query": "What is the annual paid leave entitlement for full-time employees?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_leave_policy_2026",
+      "confidence_score": 99,
+      "latency_ms": 14778.03,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.34,
+        "hallucination_rate": 0.5
+      }
+    },
+    {
+      "id": "bench_02",
+      "query": "What are the core ethical rules and code of conduct standards?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_ethics_policy",
+      "confidence_score": 15,
+      "latency_ms": 383.77,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_03",
+      "query": "What health insurance and 401k benefits are offered?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_benefits_handbook",
+      "confidence_score": 98,
+      "latency_ms": 51.4,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_04",
+      "query": "What is the company remote work and hybrid schedule policy?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_remote_work",
+      "confidence_score": 15,
+      "latency_ms": 53.05,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_05",
+      "query": "How often do performance reviews happen and what are the merit salary increases?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_performance_review",
+      "confidence_score": 99,
+      "latency_ms": 38.21,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_06",
+      "query": "What is the structured interview panel process for hiring candidates?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_hiring_sop",
+      "confidence_score": 99,
+      "latency_ms": 424.86,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_07",
+      "query": "What is our diversity, equity, and inclusion target representation?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_diversity_policy",
+      "confidence_score": 83,
+      "latency_ms": 44.96,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_08",
+      "query": "What is the required notice period for employee offboarding?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_exit_process",
+      "confidence_score": 99,
+      "latency_ms": 37.6,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_09",
+      "query": "What is the workplace anti-harassment complaint investigation timeline?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_workplace_harassment",
+      "confidence_score": 15,
+      "latency_ms": 37.58,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_10",
+      "query": "What guidelines are outlined in the employee handbook?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_employee_handbook",
+      "confidence_score": 99,
+      "latency_ms": 431.12,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_11",
+      "query": "What was the company's total revenue and net profit in Q2 2026?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_q2_2026_report",
+      "confidence_score": 15,
+      "latency_ms": 54.64,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_12",
+      "query": "What is the approved annual operating budget for FY2026?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_budget_fy2026",
+      "confidence_score": 99,
+      "latency_ms": 61.75,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_13",
+      "query": "What is the per diem meal allowance cap for corporate travel?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_expense_policy",
+      "confidence_score": 99,
+      "latency_ms": 55.48,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_14",
+      "query": "When are vendor purchases required to go through competitive bidding?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_procurement_guide",
+      "confidence_score": 99,
+      "latency_ms": 39.56,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_15",
+      "query": "How frequently are employee salaries disbursed?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_payroll_guidelines",
+      "confidence_score": 99,
+      "latency_ms": 44.94,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_16",
+      "query": "What CPU and memory specs are required for Kubernetes pods?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_kubernetes_guide",
+      "confidence_score": 15,
+      "latency_ms": 91.0,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_17",
+      "query": "What is the response timeline for a P1 production outage incident?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_incident_response",
+      "confidence_score": 15,
+      "latency_ms": 74.01,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_18",
+      "query": "What automated static analysis tools run in our CI/CD pipeline?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_cicd_pipeline",
+      "confidence_score": 15,
+      "latency_ms": 62.01,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_19",
+      "query": "What security hygiene standards must Docker container images follow?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_docker_standards",
+      "confidence_score": 99,
+      "latency_ms": 63.26,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_20",
+      "query": "What coding style rules must Python developers adhere to?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_coding_style",
+      "confidence_score": 42,
+      "latency_ms": 47.63,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.25,
+        "answer_relevancy": 0.15,
+        "hallucination_rate": 0.75
+      }
+    },
+    {
+      "id": "bench_21",
+      "query": "Can employees accept gifts exceeding $50 from commercial partners?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_compliance_manual",
+      "confidence_score": 99,
+      "latency_ms": 48.41,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_22",
+      "query": "What encryption standard is required for personal identifiable information (PII)?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_gdpr_privacy",
+      "confidence_score": 99,
+      "latency_ms": 48.53,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_23",
+      "query": "How many years must financial records be retained under corporate archival policy?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_data_retention",
+      "confidence_score": 97,
+      "latency_ms": 53.03,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_24",
+      "query": "What discount percentage requires VP of Sales approval?",
+      "category": "Sales",
+      "expected_doc_id": "doc_sales_playbook_2026",
+      "confidence_score": 99,
+      "latency_ms": 54.13,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_25",
+      "query": "Within how many days of closing a deal must a customer kickoff call be scheduled?",
+      "category": "Sales",
+      "expected_doc_id": "doc_sales_onboarding_sop",
+      "confidence_score": 99,
+      "latency_ms": 75.97,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_26",
+      "query": "What is the annual leave vacation policy for software engineers?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_leave_policy_2026",
+      "confidence_score": 92,
+      "latency_ms": 66.41,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.4,
+        "hallucination_rate": 0.3333
+      }
+    },
+    {
+      "id": "bench_27",
+      "query": "What are the rules regarding gifts and anti-bribery compliance?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_compliance_manual",
+      "confidence_score": 15,
+      "latency_ms": 59.36,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.4,
+        "hallucination_rate": 0.3333
+      }
+    },
+    {
+      "id": "bench_28",
+      "query": "How are executive bonuses and merit salary increases calculated?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_performance_review",
+      "confidence_score": 15,
+      "latency_ms": 60.83,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.24,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_29",
+      "query": "What container base image must be used for Docker builds?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_docker_standards",
+      "confidence_score": 99,
+      "latency_ms": 26.64,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_30",
+      "query": "How is financial data retention enforced during litigation holds?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_data_retention",
+      "confidence_score": 38,
+      "latency_ms": 47.84,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_31",
+      "query": "What is the policy on whistleblower protection?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_ethics_policy",
+      "confidence_score": 61,
+      "latency_ms": 41.15,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.24,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_32",
+      "query": "What is the gym and wellness stipend allowance per month?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_benefits_handbook",
+      "confidence_score": 99,
+      "latency_ms": 42.23,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_33",
+      "query": "What are the core collaboration hours for remote employees?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_remote_work",
+      "confidence_score": 15,
+      "latency_ms": 64.12,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.4,
+        "hallucination_rate": 0.3333
+      }
+    },
+    {
+      "id": "bench_34",
+      "query": "What stages are included in technical candidate interviewing?",
+      "category": "HR",
+      "expected_doc_id": "doc_hr_hiring_sop",
+      "confidence_score": 15,
+      "latency_ms": 53.64,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.2,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_35",
+      "query": "What was the operating expense total in Q2 2026?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_q2_2026_report",
+      "confidence_score": 96,
+      "latency_ms": 76.62,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_36",
+      "query": "What capital expenditure limit is set in the annual budget?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_budget_fy2026",
+      "confidence_score": 99,
+      "latency_ms": 61.62,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_37",
+      "query": "What receipts are required for travel expense reimbursement?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_expense_policy",
+      "confidence_score": 15,
+      "latency_ms": 52.67,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.2,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_38",
+      "query": "Who must approve purchase orders exceeding $10,000?",
+      "category": "Finance",
+      "expected_doc_id": "doc_fin_procurement_guide",
+      "confidence_score": 99,
+      "latency_ms": 48.9,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_39",
+      "query": "How many replicas run in production microservices clusters?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_kubernetes_guide",
+      "confidence_score": 15,
+      "latency_ms": 37.58,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_40",
+      "query": "When must a blameless post-mortem be conducted following a P1 incident?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_incident_response",
+      "confidence_score": 15,
+      "latency_ms": 65.39,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.4,
+        "hallucination_rate": 0.3333
+      }
+    },
+    {
+      "id": "bench_41",
+      "query": "How many pull request approval reviews are mandated before merging to main?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_cicd_pipeline",
+      "confidence_score": 99,
+      "latency_ms": 44.6,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_42",
+      "query": "What port or UID must Docker containers run as?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_docker_standards",
+      "confidence_score": 98,
+      "latency_ms": 48.41,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_43",
+      "query": "What static code analysis tool checks TypeScript code?",
+      "category": "Engineering",
+      "expected_doc_id": "doc_eng_coding_style",
+      "confidence_score": 15,
+      "latency_ms": 49.9,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.24,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_44",
+      "query": "What is the maximum response window for a GDPR Data Subject Access Request (DSAR)?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_gdpr_privacy",
+      "confidence_score": 98,
+      "latency_ms": 72.99,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_45",
+      "query": "How long are server audit logs retained under corporate guidelines?",
+      "category": "Legal",
+      "expected_doc_id": "doc_leg_data_retention",
+      "confidence_score": 99,
+      "latency_ms": 54.69,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_46",
+      "query": "What is the minimum annual enterprise tier contract pricing?",
+      "category": "Sales",
+      "expected_doc_id": "doc_sales_playbook_2026",
+      "confidence_score": 15,
+      "latency_ms": 49.57,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.2,
+        "hallucination_rate": 0.6667
+      }
+    },
+    {
+      "id": "bench_47",
+      "query": "Who is assigned to new enterprise clients during the 60-day onboarding window?",
+      "category": "Sales",
+      "expected_doc_id": "doc_sales_onboarding_sop",
+      "confidence_score": 99,
+      "latency_ms": 47.0,
+      "metrics": {
+        "context_precision": 0.1,
+        "context_recall": 1.0,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.64,
+        "hallucination_rate": 0.0
+      }
+    },
+    {
+      "id": "bench_48",
+      "query": "wtf",
+      "category": "General",
+      "expected_doc_id": null,
+      "confidence_score": 15,
+      "latency_ms": 52.36,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_49",
+      "query": "asdfghjk",
+      "category": "General",
+      "expected_doc_id": null,
+      "confidence_score": 15,
+      "latency_ms": 59.62,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    },
+    {
+      "id": "bench_50",
+      "query": "who is the president of Mars?",
+      "category": "General",
+      "expected_doc_id": null,
+      "confidence_score": 15,
+      "latency_ms": 41.39,
+      "metrics": {
+        "context_precision": 0.0,
+        "context_recall": 0.0,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "hallucination_rate": 1.0
+      }
+    }
+  ]
 }
