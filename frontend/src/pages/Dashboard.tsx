@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../config/api';
 
 interface AdminStats {
   total_questions_processed: number;
@@ -17,7 +18,8 @@ export const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<AdminStats | null>(null);
 
   useEffect(() => {
-    fetch('/api/v1/admin/stats')
+    const statsUrl = getApiUrl('/api/v1/admin/stats');
+    fetch(statsUrl)
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.error('Failed to fetch admin stats:', err));

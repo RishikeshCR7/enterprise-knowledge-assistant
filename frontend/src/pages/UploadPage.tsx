@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, CheckCircle, Trash2, Shield, Folder, RefreshCw } from 'lucide-react';
+import { Upload, FileText, CheckCircle, Trash2, Shield, RefreshCw } from 'lucide-react';
 
 interface DocItem {
   doc_id: string;

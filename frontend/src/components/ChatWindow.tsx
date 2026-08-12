@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getApiUrl } from '../config/api';
 
 interface Source {
   source_id: number;
@@ -13,9 +14,9 @@ interface Source {
 interface TraceStep {
   node: string;
   status: string;
-  latency_ms: float;
+  latency_ms: number;
   detail: string;
-  timestamp: float;
+  timestamp: number;
 }
 
 interface Message {
@@ -90,7 +91,8 @@ export const ChatWindow: React.FC = () => {
     ]);
 
     try {
-      const response = await fetch('/api/v1/chat/stream', {
+      const streamUrl = getApiUrl('/api/v1/chat/stream');
+      const response = await fetch(streamUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -182,7 +184,8 @@ export const ChatWindow: React.FC = () => {
 
   const submitFeedback = async (msgId: string, questionText: string, answerText: string, rating: number) => {
     try {
-      await fetch('/api/v1/feedback', {
+      const feedbackUrl = getApiUrl('/api/v1/feedback');
+      await fetch(feedbackUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -203,7 +206,7 @@ export const ChatWindow: React.FC = () => {
   };
 
   return (
-    <div style={{ flex: 1, padding: '1.5rem', display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'Inter, sans-serif' }}>
+    <div style={{ flex: 1, padding: '1.5rem 1.5rem 2.5rem 1.5rem', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 70px)', fontFamily: 'Inter, sans-serif' }}>
       
       {/* Role & Department Selection Bar (Integration 1) */}
       <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center', background: '#eef2f6', padding: '0.75rem 1rem', borderRadius: '8px' }}>
@@ -347,7 +350,7 @@ export const ChatWindow: React.FC = () => {
       )}
 
       {/* Input Form */}
-      <form onSubmit={handleSend} style={{ display: 'flex', gap: '0.5rem' }}>
+      <form onSubmit={handleSend} style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', background: '#fff', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
         <input
           type="text"
           value={question}

@@ -5,25 +5,26 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: enterprise_rag_backend
+    container_name: enterprise_backend
     ports:
       - "8000:8000"
     environment:
       - PORT=8000
       - CHROMA_PERSIST_DIR=/app/chroma_db
-      - ENVIRONMENT=production
     volumes:
-      - ./chroma_db:/app/chroma_db
-      - ./backend/evaluations.db:/app/evaluations.db
-      - ./backend/data:/app/data
-    restart: unless-stopped
+      - ./backend/chroma_db:/app/chroma_db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
+      interval: 15s
       timeout: 10s
       retries: 3
-      start_period: 15s
 
-networks:
-  default:
-    name: enterprise_rag_network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: enterprise_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
