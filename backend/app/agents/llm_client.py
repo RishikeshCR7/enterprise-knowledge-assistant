@@ -21,10 +21,10 @@ Rules:
 
 # Keywords mapping queries to target enterprise departments
 DEPT_QUERY_KEYWORDS = {
-    "Engineering": ["coding", "code", "engineering", "api", "docker", "architecture", "software", "dev"],
+    "Engineering": ["coding", "code", "engineering", "api", "docker", "architecture", "software", "dev", "security", "token", "mfa"],
     "HR": ["hr", "leave", "vacation", "hiring", "salary", "remuneration", "pto", "payroll", "interview"],
     "Finance": ["finance", "budget", "expense", "reimbursement", "expenditure", "accounting", "cost"],
-    "Legal": ["legal", "contract", "nda", "compliance", "agreement", "vendor", "policy"],
+    "Legal": ["legal", "contract", "nda", "compliance", "agreement", "vendor"],
     "Sales": ["sales", "pricing", "discount", "deal", "client", "onboarding", "customer"]
 }
 
@@ -81,15 +81,18 @@ class LLMClient:
 
         # 3. Role-Aware RBAC Access Refusal Handler
         if confidence_score < MIN_CONFIDENCE_THRESHOLD or not context_chunks:
-            user_role = (user_context.get("role") if user_context else "Employee") or "Employee"
-            user_dept = (user_context.get("department") if user_context else "General") or "General"
+            user_role_raw = (user_context.get("role") if user_context else "Employee") or "Employee"
+            user_dept_raw = (user_context.get("department") if user_context else "General") or "General"
+            
+            user_role = str(user_role_raw.value if hasattr(user_role_raw, "value") else user_role_raw).replace("UserRole.", "").replace("Department.", "")
+            user_dept = str(user_dept_raw.value if hasattr(user_dept_raw, "value") else user_dept_raw).replace("Department.", "").replace("UserRole.", "")
             target_dept = _detect_target_department(query)
 
             if target_dept and target_dept != user_dept and user_role != "Executive":
                 # Clear RBAC Security Access Denied Notice
                 rbac_denied_msg = (
                     f"🔒 **Access Restricted by Role-Based Access Control (RBAC)**\n\n"
-                    f"As an **{user_role}** ({user_dept} Department), your security clearance is restricted to **{user_dept}** documentation.\n\n"
+                    f"As a **{user_role}** ({user_dept} Department), your security clearance is restricted to **{user_dept}** documentation.\n\n"
                     f"The requested query pertains to **{target_dept}** records, which require **{target_dept}** or **Executive** clearance. "
                     f"No authorized documents were retrieved for your role profile.\n\n"
                     f"💡 *To view this information, please request access from your administrator or switch to an authorized role profile (such as {target_dept} Specialist or Executive Manager).* "

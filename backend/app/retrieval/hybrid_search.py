@@ -68,7 +68,11 @@ class BM25Indexer:
                 "metadata": metas[i]
             }
             self.corpus_chunks.append(chunk_data)
-            tokens = tokenize_text(docs[i])
+            meta = metas[i]
+            title = meta.get("title", "")
+            tags = meta.get("tags", "")
+            chunk_full_text = f"{title} {tags} {docs[i]}"
+            tokens = tokenize_text(chunk_full_text)
             tokenized_corpus.append(tokens if tokens else [""])
 
         if tokenized_corpus and BM25Okapi is not None:

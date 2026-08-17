@@ -106,7 +106,7 @@ async def chat_stream_endpoint(request: ChatRequest):
 
     try:
         final_state = rag_graph.invoke(initial_state)
-        reranked_docs = final_state.get("reranked_docs", [])
+        generation_text = final_state.get("generation", "No answer generated")
         sources = final_state.get("sources", [])
         rewritten = final_state.get("rewritten_query", "")
         confidence = final_state.get("confidence_score", 90)
@@ -127,9 +127,11 @@ async def chat_stream_endpoint(request: ChatRequest):
             }
             yield f"data: {json.dumps(meta_payload)}\n\n"
 
-            # 3. Stream LLM tokens live
-            for token in llm_client.generate_stream(request.question, reranked_docs, user_context=user_ctx.model_dump()):
-                token_payload = {"type": "token", "content": token}
+            # 3. Stream generated answer tokens live
+            words = generation_text.split(" ")
+            for i, word in enumerate(words):
+                chunk = word if i == 0 else " " + word
+                token_payload = {"type": "token", "content": chunk}
                 yield f"data: {json.dumps(token_payload)}\n\n"
 
             yield "data: [DONE]\n\n"
