@@ -1,0 +1,8 @@
+Vendor & Third-Party Legal Compliance Policy
+
+Department: Legal
+Security Clearance: Internal
+Owner: Legal Vendor Risk Management
+
+Policy Overview:
+Defines legal and regulatory compliance mandates for all external suppliers, software vendors, contractors, and commercial partners. Prior to onboarding, all third-party vendors must complete a mandatory Legal Due Diligence Questionnaire assessing SOC 2 Type II compliance, anti-bribery practices (FCPA/UK Bribery Act), and contractual data protection obligations. All vendor contracts must incorporate standard Data Processing Agreements (DPA) and Master Services Agreement (MSA) security addendums. High-risk vendors providing cloud infrastructure or processing PII undergo annual security audits and continuous monitoring by Legal & IT Governance.

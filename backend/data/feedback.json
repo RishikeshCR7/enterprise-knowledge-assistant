@@ -97,5 +97,104 @@
     "role": "HR",
     "timestamp": 1786983153.31195,
     "created_at": "2026-08-17 21:42:33"
+  },
+  {
+    "id": "fb_1787063233476",
+    "question": "What is the vacation policy?",
+    "answer": "Employees get 20 paid vacation days per year.",
+    "rating": 1,
+    "feedback_text": "Accurate and clear citation.",
+    "user_id": "rishi_test",
+    "role": "HR",
+    "timestamp": 1787063233.476846,
+    "created_at": "2026-08-18 19:57:13"
+  },
+  {
+    "id": "fb_1787063360076",
+    "question": "how are the companies finances",
+    "answer": "Based on retrieved company documentation for **how are the companies finances**:\n\nCompany Financial Performance Q2 2026: Total Revenue reached $42.5 Million, representing a 18.4% Year-over-Year growth. Net Profit Margin increased to 22.1% ($9.4 Million). Operating Expenses totaled $33.1 Million, driven by R&D expansion ($14.2M) and Sales marketing ($11.5M). Cash reserves remain s...\n\n**Referenced Sources:**\n\u2022 **Company Quarterly Financial Performance Report Q2 2026** (Finance Department - Security: Confidential)\n\u2022 **Annual Operating Budget FY2026** (Finance Department - Security: Confidential)\n\u2022 **Global Payroll & Tax Withholding Schedule** (Finance Department - Security: Confidential)\n\u2022 **Comprehensive Employee Handbook 2026** (HR Department - Security: Public)\n\u2022 **Corporate Travel & Expense Reimbursement Policy** (Finance Department - Security: Internal)",
+    "rating": 1,
+    "feedback_text": "",
+    "user_id": "usr_fin_03",
+    "role": "Finance",
+    "timestamp": 1787063360.076682,
+    "created_at": "2026-08-18 19:59:20"
+  },
+  {
+    "id": "fb_1787063588141",
+    "question": "what are the standards for deployment",
+    "answer": "Based on retrieved company documentation for **what are the standards for testing**:\n\nCI/CD Standards: GitHub Actions run automated pytest unit tests, SonarQube static analysis, and Trivy container vulnerability scanning on every PR. Branch protection rules mandate 2 approval reviews before merge to main....\n\n**Referenced Sources:**\n\u2022 **CI/CD Pipeline & Automated Testing Standards** (Engineering Department - Security: Internal)\n\u2022 **Software Engineering Coding Standards** (Engineering Department - Security: Internal)\n\u2022 **Enterprise Ethics & Code of Conduct Policy 2026** (HR Department - Security: Public)\n\u2022 **Comprehensive Employee Handbook 2026** (HR Department - Security: Public)\n\u2022 **Docker Container Deployment Guide** (Engineering Department - Security: Internal)",
+    "rating": 1,
+    "feedback_text": "",
+    "user_id": "usr_eng_02",
+    "role": "Engineering",
+    "timestamp": 1787063588.141226,
+    "created_at": "2026-08-18 20:03:08"
+  },
+  {
+    "id": "fb_1787063593032",
+    "question": "what are the standards for deployment",
+    "answer": "\u26a0\ufe0f **No Matching Documents Found**\n\nI could not find matching authorized documents in the **Engineering** knowledge base for your query: *\"what should I use for deployment\"*.\n\nPlease try rephrasing your question or check the document library.",
+    "rating": -1,
+    "feedback_text": "",
+    "user_id": "usr_eng_02",
+    "role": "Engineering",
+    "timestamp": 1787063593.032398,
+    "created_at": "2026-08-18 20:03:13"
+  },
+  {
+    "id": "fb_1787063988544",
+    "question": "when should I sign an nda",
+    "answer": "Based on retrieved company documentation for **when should I sign an nda**:\n\nNon-Disclosure Agreement (NDA) Policy\nDocument ID: LEG-NDA-2026-001\nDepartment: Legal\nSecurity Level: Internal\nPolicy Owner: Chief Legal Officer\nEffective Date: January 1, 2026\nReview Date: January 1, 2027\n1. Purpose\nThis policy establishes requirements for protecting confidential and proprietary in...\n\n**Referenced Sources:**\n\u2022 **Non-Disclosure Agreement (NDA) Policy** (Legal Department - Security: Internal)",
+    "rating": 1,
+    "feedback_text": "",
+    "user_id": "usr_leg_04",
+    "role": "Legal",
+    "timestamp": 1787063988.544558,
+    "created_at": "2026-08-18 20:09:48"
+  },
+  {
+    "id": "fb_1787064297851",
+    "question": "who can sign my contract",
+    "answer": "Based on retrieved company documentation for **who can sign my contract**:\n\nOnly employees with formally delegated signing authority may execute contracts on behalf of\nthe company.\nEmployees must not sign contracts outside their authorized limits or delegate signing\nauthority without written approval.\n6. Record Keeping\nFinal signed contracts must be stored in the company's ...\n\n**Referenced Sources:**\n\u2022 **Contract Approval & Signing Authority Policy** (Legal Department - Security: Internal)\n\u2022 **Non-Disclosure Agreement (NDA) Policy** (Legal Department - Security: Internal)",
+    "rating": 1,
+    "feedback_text": "",
+    "user_id": "usr_leg_04",
+    "role": "Legal",
+    "timestamp": 1787064297.851084,
+    "created_at": "2026-08-18 20:14:57"
+  },
+  {
+    "id": "fb_1787064404782",
+    "question": "what are the company's coding standards",
+    "answer": "Based on retrieved company documentation for **what are the company's coding standards**:\n\nCoding Style Guide: Python code must adhere to PEP 8 and use type hints. TypeScript code must enforce strict null checks and ESLint standard rules....\n\n**Referenced Sources:**\n\u2022 **Python & TypeScript Enterprise Coding Style Guide** (Engineering Department - Security: Internal)\n\u2022 **Comprehensive Employee Handbook 2026** (HR Department - Security: Public)\n\u2022 **CI/CD Pipeline & Automated Testing Standards** (Engineering Department - Security: Internal)\n\u2022 **Enterprise Ethics & Code of Conduct Policy 2026** (HR Department - Security: Public)\n\u2022 **Software Engineering Coding Standards** (Engineering Department - Security: Internal)",
+    "rating": 1,
+    "feedback_text": "",
+    "user_id": "usr_eng_02",
+    "role": "Engineering",
+    "timestamp": 1787064404.783023,
+    "created_at": "2026-08-18 20:16:44"
+  },
+  {
+    "id": "fb_1787064817075",
+    "question": "What is the vacation policy?",
+    "answer": "Employees get 20 paid vacation days per year.",
+    "rating": 1,
+    "feedback_text": "Accurate and clear citation.",
+    "user_id": "rishi_test",
+    "role": "HR",
+    "timestamp": 1787064817.0750542,
+    "created_at": "2026-08-18 20:23:37"
+  },
+  {
+    "id": "fb_1787064988662",
+    "question": "What is the vacation policy?",
+    "answer": "Employees get 20 paid vacation days per year.",
+    "rating": 1,
+    "feedback_text": "Accurate and clear citation.",
+    "user_id": "rishi_test",
+    "role": "HR",
+    "timestamp": 1787064988.662868,
+    "created_at": "2026-08-18 20:26:28"
   }
 ]

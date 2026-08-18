@@ -10,7 +10,7 @@ from app.retrieval.hybrid_search import hybrid_retriever
 logger = logging.getLogger(__name__)
 
 ENTERPRISE_DOCUMENTS = [
-    # --- HR DEPARTMENT (12 Documents) ---
+    # --- HR DEPARTMENT (10 Documents) ---
     {
         "doc_id": "doc_hr_ethics_policy",
         "title": "Enterprise Ethics & Code of Conduct Policy 2026",
@@ -112,7 +112,7 @@ ENTERPRISE_DOCUMENTS = [
         "text": "Employee Handbook: Overview of company mission, core values, dress code, attendance expectations, IT usage guidelines, and workplace safety standards."
     },
 
-    # --- FINANCE DEPARTMENT (10 Documents) ---
+    # --- FINANCE DEPARTMENT (5 Documents) ---
     {
         "doc_id": "doc_fin_q2_2026_report",
         "title": "Company Quarterly Financial Performance Report Q2 2026",
@@ -164,7 +164,7 @@ ENTERPRISE_DOCUMENTS = [
         "text": "Payroll Schedule: Salaries are disbursed bi-weekly on alternate Fridays. Direct deposit setup required. Direct bonus distributions processed semi-annually in March and September."
     },
 
-    # --- ENGINEERING DEPARTMENT (10 Documents) ---
+    # --- ENGINEERING DEPARTMENT (5 Documents) ---
     {
         "doc_id": "doc_eng_kubernetes_guide",
         "title": "Kubernetes Architecture & Microservices Deployment Standard",
@@ -216,7 +216,7 @@ ENTERPRISE_DOCUMENTS = [
         "text": "Coding Style Guide: Python code must adhere to PEP 8 and use type hints. TypeScript code must enforce strict null checks and ESLint standard rules."
     },
 
-    # --- LEGAL & COMPLIANCE (8 Documents) ---
+    # --- LEGAL & COMPLIANCE (6 Documents) ---
     {
         "doc_id": "doc_leg_compliance_manual",
         "title": "Global Legal Compliance & Anti-Bribery Policy",
@@ -247,8 +247,38 @@ ENTERPRISE_DOCUMENTS = [
         "file_type": "pdf",
         "text": "Data Retention Schedule: Financial records retained 7 years. Employee HR files retained 5 years post-termination. Server audit logs retained 1 year. Immutable litigation hold overrides standard deletion rules."
     },
+    {
+        "doc_id": "doc_leg_vendor_compliance",
+        "title": "Vendor & Third-Party Legal Compliance Policy",
+        "department": "Legal",
+        "security_level": "Internal",
+        "allowed_roles": ["Legal", "Finance", "Executive"],
+        "owner": "Legal Vendor Risk Management",
+        "file_type": "pdf",
+        "text": "Vendor & Third-Party Legal Compliance Policy: Defines legal and regulatory compliance mandates for all external suppliers, software vendors, contractors, and commercial partners. Prior to onboarding, all third-party vendors must complete a mandatory Legal Due Diligence Questionnaire assessing SOC 2 Type II compliance, anti-bribery practices (FCPA/UK Bribery Act), and contractual data protection obligations. All vendor contracts must incorporate standard Data Processing Agreements (DPA) and Master Services Agreement (MSA) security addendums. High-risk vendors providing cloud infrastructure or processing PII undergo annual security audits and continuous monitoring by Legal & IT Governance."
+    },
+    {
+        "doc_id": "doc_leg_databreach_response",
+        "title": "Information Security & Data Breach Response Policy",
+        "department": "Legal",
+        "security_level": "Confidential",
+        "allowed_roles": ["Legal", "Executive"],
+        "owner": "Legal Incident Counsel & InfoSec",
+        "file_type": "pdf",
+        "text": "Information Security & Data Breach Response Policy: Establishes emergency response procedures for suspected or confirmed data breaches, unauthorized access, and cyber incidents. Any suspected data exposure must be reported to the Legal Incident Response Taskforce within 1 hour of discovery. The Incident Commander triggers containment protocol, preserves digital forensic evidence, and coordinates with Legal Counsel. If personal identifiable information (PII) is compromised, Legal Counsel determines statutory notification mandates (including GDPR 72-hour regulatory disclosure to supervisory authorities and affected customer notification within 5 business days). Post-incident remediation reports are submitted to Executive Leadership within 14 days."
+    },
+    {
+        "doc_id": "doc_leg_employment_workplace",
+        "title": "Employment Law & Workplace Compliance Policy",
+        "department": "Legal",
+        "security_level": "Internal",
+        "allowed_roles": ["Legal", "HR", "Executive"],
+        "owner": "Employment Law Counsel",
+        "file_type": "pdf",
+        "text": "Employment Law & Workplace Compliance Policy: Ensures organization-wide compliance with national and state labor laws, OSHA occupational safety regulations, and Fair Labor Standards Act (FLSA) provisions. Outlines statutory mandates for non-discriminatory hiring, mandatory workplace safety standards, equal pay compliance, overtime calculations for non-exempt personnel, and family medical leave (FMLA) administration. Formal employee grievances or legal notices must be escalated to Employment Law Counsel within 2 business days. Disciplinary actions involving termination require pre-clearance from Legal and HR Director to ensure statutory compliance."
+    },
 
-    # --- SALES DEPARTMENT (5 Documents) ---
+    # --- SALES DEPARTMENT (6 Documents) ---
     {
         "doc_id": "doc_sales_playbook_2026",
         "title": "Enterprise Sales Strategy & Discount Approval Matrix 2026",
@@ -268,6 +298,46 @@ ENTERPRISE_DOCUMENTS = [
         "owner": "Customer Success Director",
         "file_type": "pdf",
         "text": "Customer Onboarding SOP: Kickoff call scheduled within 3 business days of deal closing. Dedicated Implementation Engineer assigned for 60-day onboarding window. Executive QBRs conducted quarterly."
+    },
+    {
+        "doc_id": "doc_sales_commission_2026",
+        "title": "Enterprise Sales Compensation & Commission Policy 2026",
+        "department": "Sales",
+        "security_level": "Confidential",
+        "allowed_roles": ["Sales", "Executive"],
+        "owner": "Sales Operations",
+        "file_type": "pdf",
+        "text": "Enterprise Sales Compensation & Commission Policy 2026: Account Executives earn a base commission rate of 10% on closed-won Annual Recurring Revenue (ARR) up to 100% quota attainment. Accelerators kick in at 15% for quota attainment between 100%-150%, and 20% for quota attainment above 150%. Quarterly sales performance bonuses of $10,000 disburse upon achieving regional team revenue targets. Commission payouts occur monthly on the 15th following deal invoice reconciliation."
+    },
+    {
+        "doc_id": "doc_sales_pipeline_policy",
+        "title": "Sales Pipeline & Opportunity Management Policy",
+        "department": "Sales",
+        "security_level": "Internal",
+        "allowed_roles": ["Sales", "Executive"],
+        "owner": "Sales Strategy & Revenue Ops",
+        "file_type": "pdf",
+        "text": "Sales Pipeline & Opportunity Management Policy: Defines standard CRM opportunity pipeline stages: 1. Prospecting/Discovery, 2. Qualification (BANT criteria), 3. Technical Demo & Evaluation, 4. Proposal & Pricing Negotiation, 5. Legal & Security Review, 6. Closed-Won / Closed-Lost. Opportunities in Stage 3 or higher must update CRM stage probability weekly. Weighted pipeline forecasting reviews occur every Monday with Revenue Operations."
+    },
+    {
+        "doc_id": "doc_sales_pricing_quotation_2026",
+        "title": "Enterprise Pricing & Quotation Guidelines 2026",
+        "department": "Sales",
+        "security_level": "Confidential",
+        "allowed_roles": ["Sales", "Executive"],
+        "owner": "Deal Desk & Commercial Finance",
+        "file_type": "pdf",
+        "text": "Enterprise Pricing & Quotation Guidelines 2026: Standard Enterprise Tier platform licensing is set at $50,000 per year per instance, including up to 1,000 active seats. Additional seats cost $50 per user per year. Account Executives have delegation authority to offer standard discounts up to 10% on multi-year commitments. Discounts between 10% and 20% require written approval from the Regional Sales Director. Discounts exceeding 20% require formal Deal Desk review and approval from the VP of Sales and CFO. Quotations are valid for 30 calendar days from issue date."
+    },
+    {
+        "doc_id": "doc_sales_renewal_policy",
+        "title": "Customer Renewal & Account Management Policy",
+        "department": "Sales",
+        "security_level": "Internal",
+        "allowed_roles": ["Sales", "Executive"],
+        "owner": "Customer Success & Renewal Ops",
+        "file_type": "pdf",
+        "text": "Customer Renewal & Account Management Policy: Renewal workflows commence 90 calendar days prior to contract expiration. Account Managers conduct annual executive business reviews (EBR) 120 days prior to renewal. Automatic 5% price uplifts apply on auto-renewals unless negotiated otherwise. Accounts flagged with red-health churn risk require immediate escalation to Customer Success VP and mandatory mitigation plan within 5 business days. Contract expansion upsells receive 12% AE commission."
     }
 ]
 

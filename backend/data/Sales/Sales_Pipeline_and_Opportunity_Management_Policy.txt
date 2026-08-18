@@ -1,0 +1,16 @@
+Sales Pipeline & Opportunity Management Policy
+
+Department: Sales
+Security Clearance: Internal
+Owner: Sales Strategy & Revenue Ops
+
+Policy Overview:
+Defines standard CRM opportunity pipeline stages:
+1. Prospecting/Discovery
+2. Qualification (BANT criteria)
+3. Technical Demo & Evaluation
+4. Proposal & Pricing Negotiation
+5. Legal & Security Review
+6. Closed-Won / Closed-Lost
+
+Opportunities in Stage 3 or higher must update CRM stage probability weekly. Weighted pipeline forecasting reviews occur every Monday with Revenue Operations.

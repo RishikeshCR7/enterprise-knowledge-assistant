@@ -1,0 +1,8 @@
+Information Security & Data Breach Response Policy
+
+Department: Legal
+Security Clearance: Confidential
+Owner: Legal Incident Counsel & InfoSec
+
+Policy Overview:
+Establishes emergency response procedures for suspected or confirmed data breaches, unauthorized access, and cyber incidents. Any suspected data exposure must be reported to the Legal Incident Response Taskforce within 1 hour of discovery. The Incident Commander triggers containment protocol, preserves digital forensic evidence, and coordinates with Legal Counsel. If personal identifiable information (PII) is compromised, Legal Counsel determines statutory notification mandates (including GDPR 72-hour regulatory disclosure to supervisory authorities and affected customer notification within 5 business days). Post-incident remediation reports are submitted to Executive Leadership within 14 days.

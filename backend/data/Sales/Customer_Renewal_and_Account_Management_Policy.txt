@@ -1,0 +1,8 @@
+Customer Renewal & Account Management Policy
+
+Department: Sales
+Security Clearance: Internal
+Owner: Customer Success & Renewal Ops
+
+Policy Overview:
+Renewal workflows commence 90 calendar days prior to contract expiration. Account Managers conduct annual executive business reviews (EBR) 120 days prior to renewal. Automatic 5% price uplifts apply on auto-renewals unless negotiated otherwise. Accounts flagged with red-health churn risk require immediate escalation to Customer Success VP and mandatory mitigation plan within 5 business days. Contract expansion upsells receive 12% AE commission.
